@@ -1,0 +1,4 @@
+Folgende Wartungsarbeiten sollten in bestimmten Zeiträumen an der Datenbank durchgeführt werden:
+Reparieren und Komprimieren
+Beim Vorgang „Reparieren“ werden Datenbanken, Indices und Abfragen repariert. Es ist nicht immer gleich erkennbar, dass sich im System ein Fehler eingeschlichen hat.
+Beim Vorgang „Komprimieren“ findet eine Reorganisation statt, ähnlich der bekannten „Defragmentierung“. Durch häufigen Gebrauch werden die Daten auf der Platte verteilt. Die Zugriffe dauern länger, die Systemperformance nimmt ab. Durch das Komprimieren werden die Daten wieder nebeneinander gestellt. Die Zugriffzeit sinkt wieder. Ebenso wird nicht mehr benötigter Speicherplatz freigegeben. Erwähnenswert ist auch die Abfrageoptimierung. Hier werden die Statistiken neu aufgebaut. Z.B. kann sich durch eine Änderung am Datenbankschema die ein oder anderer Query performanter in der Umsetzung lösen lassen.
