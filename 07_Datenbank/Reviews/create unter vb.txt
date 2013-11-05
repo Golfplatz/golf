@@ -1,0 +1,146 @@
+Option Compare Database
+
+'Unter Extras -> Verweise -> "Microsoft DAO 3.51 Object Library" aktivieren!
+
+Sub CreateTable()
+    'Datenbankobjekt erstellen
+    Dim dbs As Database
+    
+    'Aktuelle Datenbank wird dem Datenbankobjekt zugewiesen
+    Set dbs = CurrentDb
+
+    'Create-Statment für TB_GERAETE
+    dbs.Execute "CREATE TABLE tb_geraete " _
+        & "(ge_id AUTOINCREMENT      PRIMARY KEY, " _
+        & " bezeichnung VARCHAR(100) NOT NULL, " _
+        & " status YESNO             NOT NULL" _
+        & ");"
+    
+    'Create-Statment für TB_AUFGABE
+    dbs.Execute "CREATE TABLE tb_aufgabe " _
+        & "(au_id autoincrement      PRIMARY KEY, " _
+        & " bezeichnung VARCHAR(250) NOT NULL" _
+        & ");"
+        
+    'Create-Statment für TB_TICKET
+    dbs.Execute "CREATE TABLE tb_ticket " _
+        & "(tk_id AUTOINCREMENT      PRIMARY KEY, " _
+        & " ty_id NUMBER             NOT NULL, " _
+        & " typ_referenz_id NUMBER   NOT NULL, " _
+        & " status NUMBER            NOT NULL" _
+        & ");"
+    
+    'Create-Statment für TB_ROLLE
+    dbs.Execute "CREATE TABLE tb_rolle " _
+        & "(ro_id AUTOINCREMENT      PRIMARY KEY, " _
+        & " bezeichnung VARCHAR(100) NOT NULL," _
+        & " beitrag NUMBER           NOT NULL" _
+        & ");"
+
+    'Create-Statment für TB_PERSON
+    dbs.Execute "CREATE TABLE tb_person " _
+        & "(pe_id AUTOINCREMENT      PRIMARY KEY, " _
+        & " ro_id INT                NOT NULL, " _
+        & " nname VARCHAR(100)       NOT NULL, " _
+        & " vname VARCHAR(100)       NOT NULL, " _
+        & " titel VARCHAR(100)       , " _
+        & " strasse VARCHAR(100)     , " _
+        & " hnummer VARCHAR(20)      , " _
+        & " plz NUMBER               , " _
+        & " ort VARCHAR(100)         , " _
+        & " email VARCHAR(100)       , " _
+        & " gebdat DATE              , " _
+        & " eintrittsdat DATE        , " _
+        & " bezahlstatus NUMBER      NOT NULL, " _
+        & " bezahldatum DATE         ," _
+        & " FOREIGN KEY (ro_id) REFERENCES tb_rolle(ro_id)" _
+        & ");"
+        
+    'Create-Statment für TB_RECHNUNG
+    dbs.Execute "CREATE TABLE tb_rechnung " _
+        & "(re_id AUTOINCREMENT      PRIMARY KEY, " _
+        & " pe_id INT                NOT NULL, " _
+        & " betrag NUMBER            NOT NULL, " _
+        & " buchungsdat DATE         NOT NULL," _
+        & " FOREIGN KEY (pe_id) REFERENCES tb_person(pe_id)" _
+        & ");"
+        
+    'Create-Statment für TB_GEBUEHR
+    dbs.Execute "CREATE TABLE tb_gebuehr " _
+        & "(gb_id AUTOINCREMENT      PRIMARY KEY, " _
+        & " bezeichnung VARCHAR(100) NOT NULL, " _
+        & " betrag NUMBER            NOT NULL" _
+        & ");"
+        
+    'Create-Statment für TB_POSITION
+    dbs.Execute "CREATE TABLE tb_position " _
+        & "(po_id AUTOINCREMENT      PRIMARY KEY, " _
+        & " pe_id INT                NOT NULL, " _
+        & " gb_id INT                NOT NULL ," _
+        & " FOREIGN KEY (pe_id) REFERENCES tb_person(pe_id), " _
+        & " FOREIGN KEY (gb_id) REFERENCES tb_gebuehr(gb_id)" _
+        & ");"
+
+    'Create-Statment für TB_PLATZ
+    dbs.Execute "CREATE TABLE tb_platz " _
+        & "(pl_id autoincrement      PRIMARY KEY, " _
+        & " bezeichnung VARCHAR(100) NOT NULL" _
+        & ");"
+
+    'Create-Statment für TB_TYP
+    dbs.Execute "CREATE TABLE tb_typ " _
+        & "(ty_id autoincrement      PRIMARY KEY, " _
+        & " bezeichnung VARCHAR(100) NOT NULL" _
+        & ");"
+
+    'Create-Statment für TB_RESERVIERUNG
+    dbs.Execute "CREATE TABLE tb_reservierung " _
+        & "(pr_id AUTOINCREMENT      PRIMARY KEY, " _
+        & " pl_id INT                NOT NULL, " _
+        & " ty_id NUMBER             NOT NULL, " _
+        & " typ_referenz_id NUMBER   NOT NULL, " _
+        & " tstart DATE              NOT NULL, " _
+        & " tende DATE               NOT NULL, " _
+        & " dauer NUMBER             NOT NULL ," _
+        & " FOREIGN KEY (pl_id) REFERENCES tb_platz(pl_id)" _
+        & ");"
+        
+    'Create-Statment für TB_FLIGHT
+    dbs.Execute "CREATE TABLE tb_flight " _
+        & "(fl_id AUTOINCREMENT      PRIMARY KEY, " _
+        & " pe_id INT                NOT NULL, " _
+        & " pr_id INT                NOT NULL, " _
+        & " FOREIGN KEY (pe_id) REFERENCES tb_person(pe_id)," _
+        & " FOREIGN KEY (pr_id) REFERENCES tb_reservierung(pr_id) " _
+        & ");"
+
+    'Create-Statment für TB_KURS
+    dbs.Execute "CREATE TABLE tb_kurs " _
+        & "(ku_id autoincrement      PRIMARY KEY, " _
+        & " bezeichnung VARCHAR(100) NOT NULL, " _
+        & " information VARCHAR(250) " _
+        & ");"
+        
+    'Create-Statment für TB_UNTERRICHT
+    dbs.Execute "CREATE TABLE tb_unterricht " _
+        & "(un_id AUTOINCREMENT      PRIMARY KEY, " _
+        & " pe_id INT                NOT NULL, " _
+        & " ku_id INT                NOT NULL, " _
+        & " fl_id INT                NOT NULL, " _
+        & " status VARCHAR(100)      NOT NULL, " _
+        & " email YESNO              NOT NULL, " _
+        & " FOREIGN KEY (pe_id) REFERENCES tb_person(pe_id)," _
+        & " FOREIGN KEY (ku_id) REFERENCES tb_kurs(ku_id), " _
+        & " FOREIGN KEY (fl_id) REFERENCES tb_flight(fl_id)" _
+        & ");"
+
+    'Schließt das Datenbankobjekt
+    dbs.Close
+
+End Sub
+
+
+  
+  
+  
+
